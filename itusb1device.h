@@ -1,4 +1,4 @@
-/* ITUSB1 device class - Version 1.0.0
+/* ITUSB1 device class - Version 1.1.0
    Requires CP2130 class version 1.0.0 or later
    Copyright (c) 2021 Samuel Lourenço
 
@@ -52,7 +52,9 @@ public:
     void attach(int &errcnt, std::string &errstr);
     void close();
     void detach(int &errcnt, std::string &errstr);
+    CP2130::SiliconVersion getCP2130SiliconVersion(int &errcnt, std::string &errstr);
     float getCurrent(int &errcnt, std::string &errstr);
+    std::string getHardwareRevision(int &errcnt, std::string &errstr);
     std::u16string getManufacturerDesc(int &errcnt, std::string &errstr);
     bool getOvercurrentStatus(int &errcnt, std::string &errstr);
     std::u16string getProductDesc(int &errcnt, std::string &errstr);
@@ -67,6 +69,7 @@ public:
     void switchUSBData(bool value, int &errcnt, std::string &errstr);
     void switchUSBPower(bool value, int &errcnt, std::string &errstr);
 
+    static std::string hardwareRevision(const CP2130::USBConfig &config);
     static std::list<std::string> listDevices(int &errcnt, std::string &errstr);
 };
 
