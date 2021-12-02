@@ -1,4 +1,4 @@
-/* ITUSB1 device class - Version 1.0.0
+/* ITUSB1 device class - Version 1.1.0
    Requires CP2130 class version 1.0.0 or later
    Copyright (c) 2021 Samuel Lourenço
 
@@ -20,6 +20,7 @@
 
 
 // Includes
+#include <sstream>
 #include <unistd.h>
 #include <vector>
 #include "itusb1device.h"
@@ -85,6 +86,12 @@ void ITUSB1Device::detach(int &errcnt, std::string &errstr)
     }
 }
 
+// Returns the silicon version of the CP2130 bridge
+CP2130::SiliconVersion ITUSB1Device::getCP2130SiliconVersion(int &errcnt, std::string &errstr)
+{
+    return cp2130_.getSiliconVersion(errcnt, errstr);
+}
+
 // Gets the VBUS current
 // Important: SPI mode should be configured for channel 0, before using this function!
 float ITUSB1Device::getCurrent(int &errcnt, std::string &errstr)
@@ -98,6 +105,12 @@ float ITUSB1Device::getCurrent(int &errcnt, std::string &errstr)
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(0, errcnt, errstr);  // Disable the previously enabled chip select
     return currentCodeSum / (4.0 * N_SAMPLES);  // Return the average current out of "N_SAMPLES" [5] for each measurement (currentCode / 4.0 for a single reading)
+}
+
+// Returns the hardware revision of the device
+std::string ITUSB1Device::getHardwareRevision(int &errcnt, std::string &errstr)
+{
+    return hardwareRevision(getUSBConfig(errcnt, errstr));
 }
 
 // Gets the manufacturer descriptor from the device
@@ -186,6 +199,21 @@ void ITUSB1Device::switchUSBData(bool value, int &errcnt, std::string &errstr)
 void ITUSB1Device::switchUSBPower(bool value, int &errcnt, std::string &errstr)
 {
     cp2130_.setGPIO1(!value, errcnt, errstr);  // GPIO.1 corresponds to the !UPEN signal
+}
+
+// Helper function that returns the hardware revision from a given USB configuration
+std::string ITUSB1Device::hardwareRevision(const CP2130::USBConfig &config)
+{
+    std::string revision;
+    if (config.majrel > 1 && config.majrel <= 27) {
+        revision += static_cast<char>(config.majrel + 'A' - 2);  // Append major revision letter (a major release number value of 2 corresponds to the letter "A" and so on)
+    }
+    if (config.majrel == 1 || config.minrel != 0) {
+        std::ostringstream stream;
+        stream << static_cast<int>(config.minrel);
+        revision += stream.str();  // Append minor revision number
+    }
+    return revision;
 }
 
 // Helper function to list devices
