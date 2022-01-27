@@ -1,6 +1,6 @@
-/* ITUSB1 device class - Version 1.1.0
-   Requires CP2130 class version 1.0.0 or later
-   Copyright (c) 2021 Samuel Lourenço
+/* ITUSB1 device class - Version 1.2.0
+   Requires CP2130 class version 1.1.0 or later
+   Copyright (c) 2021-2022 Samuel Lourenço
 
    This library is free software: you can redistribute it and/or modify it
    under the terms of the GNU Lesser General Public License as published by
@@ -155,7 +155,8 @@ bool ITUSB1Device::getUSBPowerStatus(int &errcnt, std::string &errstr)
     return !cp2130_.getGPIO1(errcnt, errstr);  // Return the current state of the negated !UPEN signal
 }
 
-// Opens the device having the given serial number, and assigns its handle
+// Opens a device and assigns its handle
+// The serial number is optional since version 1.2.0
 int ITUSB1Device::open(const std::string &serial)
 {
     return cp2130_.open(VID, PID, serial);
