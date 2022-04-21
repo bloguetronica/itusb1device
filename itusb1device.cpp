@@ -1,4 +1,4 @@
-/* ITUSB1 device class - Version 1.2.0
+/* ITUSB1 device class - Version 1.2.1
    Requires CP2130 class version 1.1.0 or later
    Copyright (c) 2021-2022 Samuel Lourenço
 
@@ -26,12 +26,14 @@
 #include "itusb1device.h"
 
 // Definitions
+const uint8_t EPIN = 0x82;   // Address of endpoint assuming the IN direction
+const uint8_t EPOUT = 0x01;  // Address of endpoint assuming the OUT direction
 const size_t N_SAMPLES = 5;  // Number of samples per measurement, applicable to getCurrent()
 
 // Private convenience function that is used to get the raw current measurement reading from the LTC2312 ADC
 uint16_t ITUSB1Device::getRawCurrent(int &errcnt, std::string &errstr)
 {
-    std::vector<uint8_t> read = cp2130_.spiRead(2, 0x82, 0x01, errcnt, errstr);
+    std::vector<uint8_t> read = cp2130_.spiRead(2, EPIN, EPOUT, errcnt, errstr);
     return read.size() == 2 ? static_cast<uint16_t>(read[0] << 4 | read[1] >> 4) : 0;  // It is important to check if the size of the returned vector matches the number of expected bytes - If not, return zero!
 }
 
