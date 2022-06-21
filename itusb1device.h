@@ -1,4 +1,4 @@
-/* ITUSB1 device class - Version 1.2.1
+/* ITUSB1 device class - Version 1.2.2
    Requires CP2130 class version 1.1.0 or later
    Copyright (c) 2021-2022 Samuel Lourenço
 
@@ -37,8 +37,8 @@ private:
 
 public:
     // Class definitions
-    static const uint16_t VID = 0x10C4;                          // USB vendor ID
-    static const uint16_t PID = 0x8C96;                          // USB product ID
+    static const uint16_t VID = 0x10c4;                          // USB vendor ID
+    static const uint16_t PID = 0x8c96;                          // USB product ID
     static const int SUCCESS = CP2130::SUCCESS;                  // Returned by open() if successful
     static const int ERROR_INIT = CP2130::ERROR_INIT;            // Returned by open() in case of a libusb initialization failure
     static const int ERROR_NOT_FOUND = CP2130::ERROR_NOT_FOUND;  // Returned by open() if the device was not found
