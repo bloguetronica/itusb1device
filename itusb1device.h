@@ -1,6 +1,6 @@
-/* ITUSB1 device class - Version 1.2.3
+/* ITUSB1 device class - Version 1.2.4
    Requires CP2130 class version 1.1.0 or later
-   Copyright (c) 2021-2022 Samuel Lourenço
+   Copyright (c) 2021-2026 Samuel Lourenço
 
    This library is free software: you can redistribute it and/or modify it
    under the terms of the GNU Lesser General Public License as published by
@@ -44,7 +44,7 @@ public:
     static const int ERROR_NOT_FOUND = CP2130::ERROR_NOT_FOUND;  // Returned by open() if the device was not found
     static const int ERROR_BUSY = CP2130::ERROR_BUSY;            // Returned by open() if the device is already in use
 
-    ITUSB1Device();
+    explicit ITUSB1Device();  // Explicit since version 1.2.4
 
     bool disconnected() const;
     bool isOpen() const;

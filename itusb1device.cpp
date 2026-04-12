@@ -1,6 +1,6 @@
-/* ITUSB1 device class - Version 1.2.3
+/* ITUSB1 device class - Version 1.2.4
    Requires CP2130 class version 1.1.0 or later
-   Copyright (c) 2021-2022 Samuel Lourenço
+   Copyright (c) 2021-2026 Samuel Lourenço
 
    This library is free software: you can redistribute it and/or modify it
    under the terms of the GNU Lesser General Public License as published by
